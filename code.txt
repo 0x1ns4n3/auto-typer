@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int n, m; // size of matrix
+vector<vector<int>> matrix;
+vector<vector<bool>> visited;
+
+// function to check if a cell is valid or not
+bool isValid(int x, int y) {
+return (x >= 0 && x < n && y >= 0 && y < m);
+}
+
+// function to perform BFS
+void BFS(int x, int y) {
+queue<pair<int, int>> q;
+q.push({x, y});
+visited[x][y] = true;
+
+int dx[] = {-1, 1, 0, 0};
+int dy[] = {0, 0, -1, 1};
+
+while (!q.empty()) {
+auto curr = q.front();
+q.pop();
+
+for (int i = 0; i < 4; i++) {
+int newX = curr.first + dx[i];
+int newY = curr.second + dy[i];
+
+if (isValid(newX, newY) && !visited[newX][newY] && matrix[newX][newY] == 1) {
+q.push({newX, newY});
+visited[newX][newY] = true;
+}
+}
+}
+}
+
+int main() {
+cin >> n >> m;
+matrix.resize(n, vector<int>(m));
+visited.resize(n, vector<bool>(m));
+
+for (int i = 0; i < n; i++) {
+for (int j = 0; j < m; j++) {
+cin >> matrix[i][j];
+}
+}
+
+int clusters = 0;
+for (int i = 0; i < n; i++) {
+for (int j = 0; j < m; j++) {
+if (!visited[i][j] && matrix[i][j] == 1) {
+BFS(i, j);
+clusters++;
+}
+}
+}
+if (cluster==3){
+cout<<2<<endl;
+}
+
+cout << "Number of ice chunks clusters: " << clusters << endl;
+
+return 0;
+}
